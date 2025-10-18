@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luffy Quiz</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #ffe6b3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .quiz-box {
+      background: white;
+      padding: 25px 35px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      width: 330px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #ff4d00;
+    }
+
+    button {
+      background-color: #ff9900;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #ff6600;
+    }
+
+    .option {
+      display: block;
+      margin: 8px 0;
+      padding: 10px;
+      border: 2px solid #ff9900;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #fff5e6;
+      transition: 0.3s;
+    }
+
+    .option:hover {
+      background: #ffd699;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #backBtn {
+      display: none;
+      background-color: #0099ff;
+    }
+
+    #backBtn:hover {
+      background-color: #007acc;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-box">
+    <h2 id="question">Question</h2>
+    <div id="options"></div>
+    <button id="nextBtn">Next</button>
+    <p id="result"></p>
+    <button id="backBtn" onclick="goBack()">Go Back</button>
+  </div>
+
+  <script>
+    const quizData = [
+      { question: "What is Luffy’s dream?", options: ["To become a Marine", "To be Pirate King", "To find All Blue", "To be strongest swordsman"], answer: "To be Pirate King" },
+      { question: "What fruit did Luffy eat?", options: ["Gomu Gomu no Mi", "Mera Mera no Mi", "Hito Hito no Mi", "Bara Bara no Mi"], answer: "Gomu Gomu no Mi" },
+      { question: "Who gave Luffy his straw hat?", options: ["Zoro", "Ace", "Shanks", "Garp"], answer: "Shanks" },
+      { question: "What is Luffy’s bounty after Wano?", options: ["1.5 Billion", "3 Billion", "4 Billion", "5 Billion"], answer: "3 Billion" },
+      { question: "What Gear did Luffy awaken in Wano?", options: ["Gear 4", "Gear 5", "Gear 6", "Gear 2"], answer: "Gear 5" },
+      { question: "Who is Luffy’s first crewmate?", options: ["Nami", "Sanji", "Zoro", "Usopp"], answer: "Zoro" },
+      { question: "What is the name of Luffy’s ship after Going Merry?", options: ["Sunny Go", "Red Force", "Thousand Sunny", "Oro Jackson"], answer: "Thousand Sunny" },
+      { question: "Who is Luffy’s father?", options: ["Shanks", "Garp", "Dragon", "Roger"], answer: "Dragon" },
+      { question: "Where was Luffy born?", options: ["Foosha Village", "Loguetown", "Water 7", "Wano"], answer: "Foosha Village" },
+      { question: "What is Luffy’s main attack move?", options: ["Gum-Gum Pistol", "Fire Fist", "Red Hawk", "Elephant Gun"], answer: "Gum-Gum Pistol" }
+    ];
+
+    let index = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const resultEl = document.getElementById("result");
+    const backBtn = document.getElementById("backBtn");
+
+    function loadQuestion() {
+      const q = quizData[index];
+      questionEl.textContent = `Q${index + 1}. ${q.question}`;
+      optionsEl.innerHTML = "";
+      q.options.forEach(opt => {
+        const btn = document.createElement("div");
+        btn.textContent = opt;
+        btn.classList.add("option");
+        btn.onclick = () => selectOption(opt);
+        optionsEl.appendChild(btn);
+      });
+      resultEl.textContent = "";
+      nextBtn.disabled = true;
+    }
+
+    function selectOption(selected) {
+      const correct = quizData[index].answer;
+      if (selected === correct) {
+        resultEl.textContent = "✅ Correct!";
+        score++;
+      } else {
+        resultEl.textContent = `❌ Wrong! Correct: ${correct}`;
+      }
+      index++;
+      nextBtn.disabled = false;
+    }
+
+    nextBtn.onclick = () => {
+      if (index < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    };
+
+    function showResult() {
+      questionEl.textContent = `🎉 Quiz Over! You scored ${score}/${quizData.length}`;
+      optionsEl.innerHTML = "";
+      nextBtn.style.display = "none";
+      resultEl.textContent = "";
+      backBtn.style.display = "inline-block";
+    }
+
+    function goBack() {
+      window.location.href = "index.html";
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
